@@ -75,19 +75,15 @@ export default {
   <Teleport to="body">
     <div
       v-if="modal"
-      class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-start pt-16 z-50"
-      :data-cy="typeModal == 'add' ? 'modal-add' : 'modal-edit'"
+      class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-start pt-16"
+      :class="modal ? 'z-50' : ''"
+      data-cy="modal-add"
     >
       <div
         class="w-[690px] h-[335px] bg-white rounded-lg shadow-lg drop-shadow-md flex flex-col"
       >
         <div class="border-b px-8 py-3 flex justify-between items-center">
-          <p
-            class="font-bold text-base"
-            :data-cy="
-              typeModal == 'add' ? 'modal-add-title' : 'modal-edit-title'
-            "
-          >
+          <p class="font-bold text-base" data-cy="modal-add-title">
             {{ typeModal == "add" ? "Tambah List Item" : "Edit List Item" }}
           </p>
           <button
@@ -96,11 +92,7 @@ export default {
                 handleModal();
               }
             "
-            :data-cy="
-              typeModal == 'add'
-                ? 'modal-add-close-button'
-                : 'modal-edit-close-button'
-            "
+            data-cy="modal-add-close-button"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -120,22 +112,14 @@ export default {
         <div class="my-6 px-8 py-3 flex flex-col">
           <label
             class="text-[10px] font-semibold mb-1"
-            :data-cy="
-              typeModal == 'add'
-                ? 'modal-add-name-title'
-                : 'modal-edit-name-title'
-            "
+            data-cy="modal-add-name-title"
             >NAMA LIST ITEM</label
           >
           <input
             type="text"
             class="border outline-none px-4 py-2 focus:border-[#16ABF8] rounded"
             placeholder="Tambahkan nama list item"
-            :data-cy="
-              typeModal == 'add'
-                ? 'modal-add-name-input'
-                : 'modal-edit-name-input'
-            "
+            data-cy="modal-add-name-input"
             @input="
               (e) => {
                 this.title = e.target.value;
@@ -145,22 +129,14 @@ export default {
           />
           <label
             class="text-[10px] font-semibold mb-1 mt-5"
-            :data-cy="
-              typeModal == 'add'
-                ? 'modal-add-priority-title'
-                : 'modal-edit-priority-title'
-            "
+            data-cy="modal-add-priority-title"
             >PRIORITY</label
           >
           <div class="relative">
             <button
               class="flex items-center border min-w-[25%] py-2 px-2 rounded relative"
               :class="dropdown ? 'bg-[#E5E5E5] !rounded-b-none' : ''"
-              :data-cy="
-                typeModal == 'add'
-                  ? 'modal-add-priority-dropdown'
-                  : 'modal-edit-priority-dropdown'
-              "
+              data-cy="modal-add-priority-dropdown"
               @click="
                 () => {
                   dropdown = !dropdown;
@@ -211,11 +187,7 @@ export default {
                       dropdown = !dropdown;
                     }
                   "
-                  :data-cy="
-                    typeModal == 'add'
-                      ? `modal-add-priority-${prior.value}`
-                      : `moda;-edit-priority-${prior.value}`
-                  "
+                  :data-cy="`modal-add-priority-${prior.value}`"
                 >
                   <div
                     class="priority mx-3 h-3 w-3 rounded-full"
@@ -247,11 +219,7 @@ export default {
                 ? 'disabled:bg-[#16ABF8] disabled:opacity-20'
                 : ''
             "
-            :data-cy="
-              typeModal == 'add'
-                ? 'modal-add-save-button'
-                : 'modal-edit-save-button'
-            "
+            data-cy="modal-add-save-button"
             :disabled="title.length === 0"
             @click="
               () => {

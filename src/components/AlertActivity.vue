@@ -12,7 +12,8 @@ export default {
   <Teleport to="body">
     <div
       v-if="alert"
-      class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-start pt-16 z-50"
+      class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-start pt-16"
+      :class="modal ? 'z-50' : ''"
       data-cy="modal-information"
     >
       <div
