@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     activityItem() {
-      return `activity-item-${this.index}`;
+      return `activity-item`;
     },
   },
 };

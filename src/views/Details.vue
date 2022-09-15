@@ -17,6 +17,7 @@ export default {
       modal: false,
       dataModal: {},
       typeModal: "",
+      sort: false,
     };
   },
   computed: {
@@ -87,14 +88,14 @@ export default {
         <p
           class="text-3xl font-bold text-center mx-5"
           data-cy="todo-title"
-          v-if="!inputForm"
+          v-show="!inputForm"
         >
           {{ byId.title }}
         </p>
         <input
           type="text"
           class="text-3xl font-bold mx-5 min-w-0 sm:max-w-[75%] bg-[#f4f4f4] border-b-2 outline-none"
-          v-if="inputForm"
+          v-show="inputForm"
           data-cy="todo-title"
           @input="
             (e) => {

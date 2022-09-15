@@ -40,6 +40,7 @@ export default {
       v-if="modal"
       class="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-start pt-16 z-50"
       data-cy="modal-delete"
+      @click.self="() => handleModal({}, '')"
     >
       <div
         class="w-[490px] h-[355px] bg-white rounded-lg shadow-lg drop-shadow-md px-8 py-3 flex flex-col"
@@ -70,7 +71,8 @@ export default {
             <button
               class="border rounded-full bg-[#F4F4F4] border-[#F4F4F4] text-[#4A4A4A] font-medium flex py-2 px-8"
               @click="
-                () => {
+                (e) => {
+                  e.stopPropagation();
                   handleModal({});
                 }
               "
@@ -79,9 +81,10 @@ export default {
               Batal
             </button>
             <button
-              class="border rounded-full bg-danger border-danger text-white font-medium flex py-2 px-8"
+              class="border rounded-full bg-danger border-danger text-white font-medium flex py-2 px-8 z-10"
               @click="
                 () => {
+                  e.stopPropagation();
                   handleDelete(dataModal.id);
                 }
               "
