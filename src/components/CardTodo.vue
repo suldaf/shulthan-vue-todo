@@ -96,6 +96,7 @@ export default {
             handleModal(todo, 'edit');
           }
         "
+        data-cy="todo-item-edit-button"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +104,6 @@ export default {
           viewBox="0 0 25 25"
           stroke-width="1.5"
           class="w-6 h-5 stroke-trans"
-          data-cy="todo-item-edit-button"
         >
           <path
             stroke-linecap="round"
