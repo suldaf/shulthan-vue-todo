@@ -19,12 +19,16 @@ export default {
     handleModal: {
       type: Function,
     },
+    handleModalDelete: {
+      type: Function,
+    },
   },
   methods: {
     ...mapActions(useTodoStore, ["deleteTodo", "updateTodo"]),
-    handleDelete(id) {
-      this.deleteTodo(id, this.$route.params.id);
-    },
+    // handleDelete(id) {
+    //   this.deleteTodo(id, this.$route.params.id);
+    //   h
+    // },
     handleCheck(e) {
       const payload = {
         is_active: e.target.checked ? 0 : 1,
@@ -116,11 +120,7 @@ export default {
     <div>
       <button
         data-cy="todo-item-delete-button"
-        @click="
-          (e) => {
-            handleDelete(todo.id);
-          }
-        "
+        @click="() => handleModalDelete(todo, 'todo')"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

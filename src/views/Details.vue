@@ -4,6 +4,8 @@ import { useActivityStore } from "../stores/activity";
 import { useTodoStore } from "../stores/todo";
 import CardTodo from "../components/CardTodo.vue";
 import ModalTodo from "../components/ModalTodo.vue";
+import AlertActivity from "../components/AlertActivity.vue";
+import ModalDelete from "../components/ModalDelete.vue";
 
 export default {
   data() {
@@ -18,6 +20,8 @@ export default {
       dataModal: {},
       typeModal: "",
       sort: false,
+      alert: false,
+      modalDelete: false,
     };
   },
   computed: {
@@ -29,7 +33,10 @@ export default {
     ...mapActions(useActivityStore, ["getActivityById", "updateActivity"]),
     handleInputForm() {
       if (this.inputForm) {
-        this.updateActivity({ title: this.title }, this.$route.params.id);
+        this.updateActivity(
+          { title: this.title.length == 0 ? this.byId.title : this.title },
+          this.$route.params.id
+        );
         this.inputForm = false;
       } else {
         this.inputForm = !this.inputForm;
@@ -41,6 +48,15 @@ export default {
     },
     handleModal(data, type) {
       this.modal = !this.modal;
+
+      this.dataModal = data;
+      this.typeModal = type;
+    },
+    handleAlert() {
+      this.alert = !this.alert;
+    },
+    handleModalDelete(data, type) {
+      this.modalDelete = !this.modalDelete;
       this.dataModal = data;
       this.typeModal = type;
     },
@@ -54,7 +70,7 @@ export default {
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
   },
-  components: { CardTodo, ModalTodo },
+  components: { CardTodo, ModalTodo, AlertActivity, ModalDelete },
 };
 </script>
 
@@ -97,7 +113,7 @@ export default {
           class="text-3xl font-bold mx-5 min-w-0 sm:max-w-[75%] bg-[#f4f4f4] border-b-2 outline-none"
           v-show="inputForm"
           data-cy="todo-title"
-          @input="
+          @change="
             (e) => {
               this.title = e.target.value;
             }
@@ -335,21 +351,33 @@ export default {
           </clipPath>
         </defs>
       </svg>
-      <div class="flex w-full flex-col">
+      <div class="flex w-full flex-col" v-if="list.length > 0">
         <CardTodo
           v-for="(todo, index) in list"
           :key="index"
           :index="index"
           :todo="todo"
           :handleModal="handleModal"
+          :handleAlert="handleAlert"
+          :handleModalDelete="handleModalDelete"
         />
       </div>
     </div>
+    <ModalDelete
+      :modal="modalDelete"
+      :handleModal="handleModal"
+      :dataModal="dataModal"
+      :typeModal="typeModal"
+      :handleAlert="handleAlert"
+      :handleModalDelete="handleModalDelete"
+    />
     <ModalTodo
       :modal="modal"
       :handleModal="handleModal"
       :typeModal="typeModal"
       :dataModal="dataModal"
+      :handleAlert="handleAlert"
     />
+    <AlertActivity :alert="alert" />
   </div>
 </template>

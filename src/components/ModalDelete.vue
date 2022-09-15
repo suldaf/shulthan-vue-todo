@@ -1,6 +1,7 @@
 <script>
 import { mapActions } from "pinia";
 import { useActivityStore } from "../stores/activity";
+import { useTodoStore } from "../stores/todo";
 
 export default {
   props: {
@@ -19,13 +20,22 @@ export default {
     handleAlert: {
       type: Function,
     },
+    handleModalDelete: {
+      type: Function,
+    },
   },
   methods: {
     ...mapActions(useActivityStore, ["deleteActivity"]),
+    ...mapActions(useTodoStore, ["deleteTodo"]),
     handleDelete(id) {
-      this.deleteActivity(id);
-      this.handleModal({});
+      if (this.typeModal === "activity") {
+        this.deleteActivity(id);
+      } else {
+        this.deleteTodo(id, this.$route.params.id);
+      }
+      this.handleModal({}, "");
       this.handleAlert();
+      this.handleModalDelete({}, "");
       setTimeout(() => {
         this.handleAlert();
       }, 1000);
@@ -83,7 +93,7 @@ export default {
             <button
               class="border rounded-full bg-danger border-danger text-white font-medium flex py-2 px-8 z-10"
               @click="
-                () => {
+                (e) => {
                   e.stopPropagation();
                   handleDelete(dataModal.id);
                 }
