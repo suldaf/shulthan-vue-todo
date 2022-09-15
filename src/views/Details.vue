@@ -22,6 +22,7 @@ export default {
       sort: false,
       alert: false,
       modalDelete: false,
+      sortValue: "za",
     };
   },
   computed: {
@@ -51,6 +52,10 @@ export default {
 
       this.dataModal = data;
       this.typeModal = type;
+    },
+    handleSort(value) {
+      this.sortValue = value;
+      this.sort = false;
     },
     handleAlert() {
       this.alert = !this.alert;
@@ -104,14 +109,14 @@ export default {
         <p
           class="text-3xl font-bold text-center mx-5"
           data-cy="todo-title"
-          v-show="!inputForm"
+          v-if="!inputForm"
         >
           {{ byId.title }}
         </p>
         <input
           type="text"
           class="text-3xl font-bold mx-5 min-w-0 sm:max-w-[75%] bg-[#f4f4f4] border-b-2 outline-none"
-          v-show="inputForm"
+          v-if="inputForm"
           data-cy="todo-title"
           @change="
             (e) => {
@@ -159,33 +164,255 @@ export default {
           </svg>
         </button>
       </div>
-      <button
-        data-cy="todo-sort-button"
-        class="border-2 rounded-full p-3 mr-1 sm:mr-2 lg:mr-0"
-        @click="() => {}"
-        v-if="list.length > 0"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          class="w-6 h-6 stroke-trans"
+      <div class="relative">
+        <button
+          data-cy="todo-sort-button"
+          class="border-2 rounded-full p-3 mr-1 sm:mr-2 lg:mr-0 hover:border-primary"
+          @click="
+            () => {
+              sort = !sort;
+            }
+          "
+          v-if="list.length > 0"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
-          />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            class="w-6 h-6 stroke-trans hover:stroke-primary"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
+            />
+          </svg>
+        </button>
+        <div class="absolute flex flex-col -left-[3rem] z-10" v-show="sort">
+          <button
+            class="flex items-center border min-w-[11rem] py-2 px-2 bg-white hover:bg-[#efefef]"
+            data-cy="sort-selection"
+            @click="
+              () => {
+                handleSort('latest');
+              }
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-primary"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2 3.75A.75.75 0 012.75 3h11.5a.75.75 0 010 1.5H2.75A.75.75 0 012 3.75zM2 7.5a.75.75 0 01.75-.75h7.508a.75.75 0 010 1.5H2.75A.75.75 0 012 7.5zM14 7a.75.75 0 01.75.75v6.59l1.95-2.1a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 111.1-1.02l1.95 2.1V7.75A.75.75 0 0114 7zM2 11.25a.75.75 0 01.75-.75h4.562a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            Terbaru
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-trans ml-3"
+              v-if="sortValue === 'latest'"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <button
+            class="flex items-center border min-w-[11rem] py-2 px-2 bg-white hover:bg-[#efefef]"
+            data-cy="sort-selection"
+            @click="
+              () => {
+                handleSort('oldest');
+              }
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-primary"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2 3.75A.75.75 0 012.75 3h11.5a.75.75 0 010 1.5H2.75A.75.75 0 012 3.75zM2 7.5a.75.75 0 01.75-.75h6.365a.75.75 0 010 1.5H2.75A.75.75 0 012 7.5zM14 7a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02l-1.95-2.1v6.59a.75.75 0 01-1.5 0V9.66l-1.95 2.1a.75.75 0 11-1.1-1.02l3.25-3.5A.75.75 0 0114 7zM2 11.25a.75.75 0 01.75-.75H7A.75.75 0 017 12H2.75a.75.75 0 01-.75-.75z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Terlama
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-trans ml-3"
+              v-if="sortValue === 'oldest'"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <button
+            class="flex items-center border min-w-[11rem] py-2 px-2 bg-white hover:bg-[#efefef]"
+            data-cy="sort-selection"
+            @click="
+              () => {
+                handleSort('az');
+              }
+            "
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.25 7.5V3.75C11.25 2.715 11.715 2.25 12.75 2.25C13.785 2.25 14.25 2.715 14.25 3.75V7.5M14.25 5.25H11.25"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14.25 15.75H11.25L14.25 10.5H11.25"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 11.25L5.25 13.5L7.5 11.25"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.25 4.5V13.5"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            A-Z
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-trans ml-3"
+              v-if="sortValue === 'az'"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <button
+            class="flex items-center border min-w-[11rem] py-2 px-2 bg-white hover:bg-[#efefef]"
+            data-cy="sort-selection"
+            @click="
+              () => {
+                handleSort('za');
+              }
+            "
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.25 7.5V3.75C11.25 2.715 11.715 2.25 12.75 2.25C13.785 2.25 14.25 2.715 14.25 3.75V7.5M14.25 5.25H11.25"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14.25 15.75H11.25L14.25 10.5H11.25"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3 11.25L5.25 13.5L7.5 11.25"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.25 4.5V13.5"
+                stroke="#16ABF8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Z-A
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-trans ml-3"
+              v-if="sortValue === 'za'"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+          <button
+            class="flex items-center border min-w-[11rem] py-2 px-2 bg-white hover:bg-[#efefef]"
+            data-cy="sort-selection"
+            @click="
+              () => {
+                handleSort('unfinished');
+              }
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-primary"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M2.24 6.8a.75.75 0 001.06-.04l1.95-2.1v8.59a.75.75 0 001.5 0V4.66l1.95 2.1a.75.75 0 101.1-1.02l-3.25-3.5a.75.75 0 00-1.1 0L2.2 5.74a.75.75 0 00.04 1.06zm8 6.4a.75.75 0 00-.04 1.06l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75a.75.75 0 00-1.5 0v8.59l-1.95-2.1a.75.75 0 00-1.06-.04z"
+                clip-rule="evenodd"
+              />
+            </svg>
+
+            Belum Selesai
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              class="w-5 h-5 fill-trans ml-3"
+              v-if="sortValue === 'unfinished'"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
       <button
         class="border rounded-full bg-primary border-primary text-white font-medium flex py-3 px-3 sm:px-6"
         data-cy="todo-add-button"
         @click="
           () => {
-            handleModal();
-            typeModal = 'add';
+            handleModal({}, 'add');
           }
         "
       >
@@ -376,7 +603,6 @@ export default {
       :handleModal="handleModal"
       :typeModal="typeModal"
       :dataModal="dataModal"
-      :handleAlert="handleAlert"
     />
     <AlertActivity :alert="alert" />
   </div>

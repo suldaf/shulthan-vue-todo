@@ -52,7 +52,8 @@ export default {
       this.title = "";
     },
     changePriority() {
-      if (this.dataModal) {
+      if (this.dataModal && this.typeModal !== "add") {
+        console.log("masuk");
         this.priority = this.listPriority.find(
           (e) => e.value === this.dataModal.priority
         );
@@ -177,7 +178,7 @@ export default {
                 />
               </svg>
             </button>
-            <div v-show="dropdown" class="absolute min-w-full">
+            <div v-if="dropdown" class="absolute min-w-full">
               <template v-for="(prior, index) in listPriority" :key="index">
                 <button
                   class="flex items-center border min-w-[25%] py-2 px-2 bg-white last:rounded-b hover:bg-[#efefef]"

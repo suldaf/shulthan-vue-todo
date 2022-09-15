@@ -30,12 +30,12 @@ export default {
     handleDelete(id) {
       if (this.typeModal === "activity") {
         this.deleteActivity(id);
+        this.handleModal({}, "");
       } else {
         this.deleteTodo(id, this.$route.params.id);
+        this.handleModalDelete({}, "");
       }
-      this.handleModal({}, "");
       this.handleAlert();
-      this.handleModalDelete({}, "");
       setTimeout(() => {
         this.handleAlert();
       }, 1000);
